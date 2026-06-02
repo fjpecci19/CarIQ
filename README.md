@@ -13,10 +13,10 @@ CarIQ es una aplicación web full-stack para explorar marcas de vehículos (auto
 
 ## 📦 Estructura
 
-CarIQ/
-├── backend/              # API REST (Spring Boot)
-├── frontend/             # Interfaz web (SvelteKit)
-└── docker-compose.yml    # Orquesta MongoDB + backend + frontend
+    CarIQ/
+    ├── backend/              # API REST (Spring Boot)
+    ├── frontend/             # Interfaz web (SvelteKit)
+    └── docker-compose.yml    # Orquesta MongoDB + backend + frontend
 
 ## 🚀 Cómo ejecutar
 
@@ -26,11 +26,7 @@ Requisitos: Docker y Docker Compose.
 docker compose up --build
 ```
 
-| Servicio  | URL                    |
-|-----------|------------------------|
-| Frontend  | http://localhost:3000  |
-| Backend   | http://localhost:8080  |
-| MongoDB   | localhost:27017        |
+Esto levanta los tres servicios (base de datos, backend y frontend) juntos.
 
 Para detener:
 
