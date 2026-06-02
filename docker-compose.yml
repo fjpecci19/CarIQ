@@ -1,0 +1,57 @@
+services:
+  mongodb:
+    image: mongo:7
+    container_name: cariq-mongo
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin123
+    volumes:
+      - mongo_data:/data/db
+    healthcheck:
+      test: ["CMD-SHELL", "mongosh --quiet --eval 'db.adminCommand({ ping: 1 })' || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+    networks:
+      - cariq-net
+
+  backend:
+    build: ./backend
+    container_name: cariq-backend
+    ports:
+      - "8080:8080"
+    environment:
+      # Apunta al servicio "mongodb" dentro de la red de Docker (no a localhost).
+      SPRING_MONGODB_URI: mongodb://admin:admin123@mongodb:27017/cariq?authSource=admin
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    networks:
+      - cariq-net
+
+  frontend:
+    build: ./frontend
+    container_name: cariq-frontend
+    ports:
+      - "3000:3000"
+    environment:
+      # URL interna (server-side): SvelteKit -> backend dentro de la red de Docker.
+      API_URL_INTERNAL: http://backend:8080
+      # URL pública (si algún día se llama al backend desde el navegador).
+      PUBLIC_API_URL: http://localhost:8080
+      # Puerto en el que escucha adapter-node.
+      PORT: 3000
+    depends_on:
+      - backend
+    networks:
+      - cariq-net
+
+volumes:
+  mongo_data:
+
+networks:
+  cariq-net:
+    driver: bridge

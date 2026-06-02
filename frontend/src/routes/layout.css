@@ -1,0 +1,101 @@
+@import 'tailwindcss';
+@plugin '@tailwindcss/typography';
+
+/* Dark mode por clase (.dark en <html>), en vez de prefers-color-scheme.
+   Tailwind 4 necesita declarar el variant explícitamente. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Utilities base reutilizables. En Tailwind 4 sólo se puede `@apply` algo
+   declarado como @utility (o una utility nativa), por eso btn/chip van acá
+   y las variantes (.btn-primary, .chip-accent) las extienden abajo. */
+@utility btn {
+	@apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition;
+}
+@utility chip {
+	@apply inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium;
+	@apply border-gray-200 bg-gray-50 text-gray-700;
+	@apply dark:border-white/10 dark:bg-white/5 dark:text-gray-200;
+}
+
+/* ---- Base / anti-flash de fondo ---- */
+@layer base {
+	html {
+		scroll-behavior: smooth;
+		background-color: #ffffff;
+	}
+	html.dark {
+		background-color: #05070d;
+	}
+	body {
+		@apply text-gray-900 antialiased dark:text-gray-100;
+	}
+}
+
+/* ---- Componentes reutilizables (centralizan el tema claro/oscuro) ---- */
+@layer components {
+	/* Fondo de la app:
+	   claro -> blanco siempre.
+	   oscuro -> negro fundiéndose con azul medianoche. */
+	.app-bg {
+		@apply bg-white;
+	}
+	.dark .app-bg {
+		background:
+			radial-gradient(1100px 600px at 50% -15%, rgba(37, 99, 235, 0.28), transparent 60%),
+			radial-gradient(900px 500px at 100% 0%, rgba(30, 41, 99, 0.25), transparent 55%),
+			linear-gradient(180deg, #05070d 0%, #070b1a 45%, #0a1230 100%);
+		background-attachment: fixed;
+	}
+
+	/* Barras (navbar / footer) con leve blur. */
+	.bar {
+		@apply border-gray-200 bg-white/85 backdrop-blur-md;
+		@apply dark:border-white/10 dark:bg-[#070b1a]/80;
+	}
+
+	/* Superficie de tarjeta. */
+	.surface {
+		@apply rounded-2xl border border-gray-200 bg-white transition-colors duration-200;
+		@apply dark:border-white/10 dark:bg-white/[0.035];
+	}
+	/* Tarjeta que reacciona al hover (acento verde en claro, azul en oscuro). */
+	.card-hover {
+		@apply hover:-translate-y-0.5 hover:border-emerald-500/70 hover:shadow-lg hover:shadow-emerald-600/10;
+		@apply dark:hover:border-sky-400/70 dark:hover:shadow-sky-500/15;
+		@apply transition duration-200;
+	}
+
+	/* Botón sólido (acento primario). */
+	.btn-primary {
+		@apply btn bg-emerald-600 text-white hover:bg-emerald-700;
+		@apply dark:bg-sky-500 dark:hover:bg-sky-400;
+	}
+	.btn-outline {
+		@apply btn border border-emerald-600/60 text-emerald-700 hover:bg-emerald-50;
+		@apply dark:border-sky-400/50 dark:text-sky-300 dark:hover:bg-sky-400/10;
+	}
+	.btn-ghost {
+		@apply btn text-gray-600 hover:bg-gray-100 hover:text-gray-900;
+		@apply dark:text-gray-300 dark:hover:bg-white/10 dark:hover:text-white;
+	}
+
+	/* Link con acento. */
+	.link-accent {
+		@apply font-medium text-emerald-700 hover:text-emerald-600 dark:text-sky-400 dark:hover:text-sky-300;
+	}
+
+	/* Chip de acento. El rojo italiano aparece sólo acá como detalle. */
+	.chip-accent {
+		@apply chip border-red-500/40 bg-red-500/5 text-red-700;
+		@apply dark:border-sky-400/30 dark:bg-sky-400/10 dark:text-sky-300;
+	}
+
+	/* Título de sección con barrita de acento (verde+rojo en claro, azul en oscuro). */
+	.section-title {
+		@apply text-2xl font-bold tracking-tight sm:text-3xl;
+	}
+	.accent-rule {
+		@apply h-1 w-16 rounded-full bg-linear-to-r from-emerald-600 to-red-600;
+		@apply dark:from-sky-500 dark:to-blue-600;
+	}
+}
