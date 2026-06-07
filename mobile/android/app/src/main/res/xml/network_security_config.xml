@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Permite tráfico HTTP (cleartext) SOLO para los hosts de desarrollo del backend
+  local. El resto del tráfico sigue exigiendo HTTPS (más seguro que activar
+  usesCleartextTraffic globalmente).
+
+  - 10.0.2.2  -> alias del host (tu PC) desde el emulador Android.
+  - localhost / 127.0.0.1 -> por si se usa adb reverse o similar.
+  - 192.168.0.42 -> ejemplo de IP de la PC en la LAN (dispositivo físico).
+    Cambiala por la IP real de tu PC si probás en un teléfono.
+
+  Para el backend en la nube (HTTPS) no hace falta tocar nada acá.
+-->
+<network-security-config>
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="false">10.0.2.2</domain>
+        <domain includeSubdomains="false">localhost</domain>
+        <domain includeSubdomains="false">127.0.0.1</domain>
+        <domain includeSubdomains="false">192.168.0.42</domain>
+    </domain-config>
+</network-security-config>
