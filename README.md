@@ -20,35 +20,19 @@ CarIQ es una aplicación full-stack para explorar marcas de vehículos (autos, m
     ├── mobile/               # App mobile (Flutter)
     └── docker-compose.yml    # Orquesta MongoDB + backend + frontend
 
-## 🚀 Cómo ejecutar
+## 🧩 Componentes
 
-Requisitos: Docker y Docker Compose.
+### Backend
+API REST en Spring Boot (Java 21) con Spring Data MongoDB. Expone los endpoints de marcas y vehículos, y modela de forma flexible los distintos tipos de vehículo (combustión, eléctricos, motos).
 
-```bash
-docker compose up --build
-```
+### Frontend
+Interfaz web en SvelteKit + TypeScript + TailwindCSS. Consume el backend con carga server-side, tiene diseño responsive y modo claro/oscuro.
 
-Para detener:
+### Mobile
+App Flutter de solo lectura, con arquitectura feature-first, Riverpod para estado y Dio para HTTP. Consume el mismo backend y comparte el catálogo con la web.
 
-```bash
-docker compose down
-```
-
-### Base de datos: local o nube
-
-El backend toma la conexión desde la variable `SPRING_MONGODB_URI`. Sin definirla, usa el MongoDB local del `docker-compose`; con una URI de MongoDB Atlas, usa la base en la nube. Copiá `.env.example` a `.env` y completá según el caso.
-
-## 📱 App mobile
-
-App Flutter de solo lectura que consume el mismo backend REST.
-
-```bash
-cd mobile
-flutter pub get
-flutter run
-```
-
-El backend se configura en `mobile/lib/core/config/environment.dart`. Más detalles en [mobile/README.md](mobile/README.md).
+### Base de datos
+MongoDB con un setup híbrido configurable mediante `SPRING_MONGODB_URI`: una base local levantada por Docker para desarrollo, o MongoDB Atlas en la nube para acceso desde cualquier lugar.
 
 ## 🔌 API
 
