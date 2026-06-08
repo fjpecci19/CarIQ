@@ -68,13 +68,6 @@ El backend se configura en `mobile/lib/core/config/environment.dart`. Más detal
 - App mobile sobre el mismo backend
 - Conexión configurable: MongoDB local o Atlas
 
-## 🗺️ Roadmap
-
-- [ ] Endpoints de escritura protegidos por API Key
-- [ ] Panel de administración
-- [ ] Comparador de modelos
-- [ ] Buscador con filtros
-
 ## 👤 Autor
 
 **Franco Pecci** — [@fjpecci19](https://github.com/fjpecci19)
